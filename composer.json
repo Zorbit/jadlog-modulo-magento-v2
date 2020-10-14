@@ -1,0 +1,19 @@
+{
+  "name": "jadlog/embarcador",
+  "description": "Jadlog Embarcador",
+  "type": "magento2-module",
+  "version": "0.0.6",
+  "license": [
+    "OSL-3.0"
+  ],
+  "require": {
+  },
+  "autoload": {
+    "files": [ "registration.php" ],
+    "psr-4": {
+      "Jadlog\\Embarcador\\": ""
+    }
+  },
+  "minimum-stability": "dev",
+  "prefer-stable": true
+}

@@ -1,0 +1,46 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+  <default>
+    <jadlog_embarcador>
+      <geral>
+        <habilitar>1</habilitar>
+        <token></token>
+        <frete_url>http://www.jadlog.com.br/embarcador/api/frete/valor</frete_url>
+        <pedido_url>http://www.jadlog.com.br/embarcador/api/pedido/incluir</pedido_url>
+        <tracking_url>http://www.jadlog.com.br/embarcador/api/tracking/consultar</tracking_url>
+        <!--tracking_site_url>http://www.jadlog.com.br/siteDpd/tracking.jad?cte={TRACKING_ID}</tracking_site_url-->
+      </geral>
+      <pickup>
+        <mypudo_url>http://www.jadlog.com.br/embarcador/api/pickup/pudos</mypudo_url>
+        <mypudo_shipper_id>JAD</mypudo_shipper_id>
+      </pickup>
+      <remetente>
+        <ie>ISENTA</ie>
+      </remetente>
+    </jadlog_embarcador>
+    <carriers>
+      <jadlog_expresso>
+        <!-- delete from core_config_data where path like 'carriers/jadlog_expresso/%'; -->
+        <active>1</active>
+        <sallowspecific>0</sallowspecific>
+        <model>Jadlog\Embarcador\Model\Carrier\JadlogExpresso</model>
+        <name>Expresso</name>
+        <title>Jadlog</title>
+        <sallowspecific>0</sallowspecific>
+        <showmethod>1</showmethod>
+        <specificerrmsg>Esse método não está disponível. Entre em contato conosco.</specificerrmsg>
+      </jadlog_expresso>
+      <jadlog_pickup>
+        <!-- delete from core_config_data where path like 'carriers/jadlog_pickup/%'; -->
+        <active>1</active>
+        <sallowspecific>0</sallowspecific>
+        <model>Jadlog\Embarcador\Model\Carrier\JadlogPickup</model>
+        <name>Pickup</name>
+        <title>Jadlog</title>
+        <sallowspecific>0</sallowspecific>
+        <showmethod>1</showmethod>
+        <specificerrmsg>Esse método não está disponível. Entre em contato conosco.</specificerrmsg>
+      </jadlog_pickup>
+    </carriers>
+  </default>
+</config>

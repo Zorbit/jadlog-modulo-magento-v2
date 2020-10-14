@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+  <preference for="Jadlog\Embarcador\Api\PudoManagementInterface" type="Jadlog\Embarcador\Model\PudoManagement" />
+  <preference for="Jadlog\Embarcador\Api\Data\PudoInterface" type="Jadlog\Embarcador\Model\Pudo" />
+  <type name="Jadlog\Embarcador\Model\ResourceModel\SalesOrder\Grid\Collection">
+    <!-- for  joining tables Ref: https://www.siphor.com/join-two-tables-using-ui-grid-component-magento-2/-->
+    <arguments>
+      <argument name="mainTable" xsi:type="string">jadlog_sales_order</argument>
+      <argument name="eventPrefix" xsi:type="string">jadlog_embarcador_sales_order_grid_collection</argument>
+      <argument name="eventObject" xsi:type="string">jadlog_embarcador_sales_order_collection</argument>
+      <argument name="resourceModel" xsi:type="string">Jadlog\Embarcador\Model\ResourceModel\SalesOrder</argument>
+    </arguments>
+  </type>
+  <type name="Magento\Framework\View\Element\UiComponent\DataProvider\CollectionFactory">
+    <arguments>
+      <argument name="collections" xsi:type="array">
+        <item name="embarcador_pedidos_listing_data_source" xsi:type="string">
+          Jadlog\Embarcador\Model\ResourceModel\SalesOrder\Grid\Collection
+        </item>
+      </argument>
+    </arguments>
+  </type>
+</config>

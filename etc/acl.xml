@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Acl/etc/acl.xsd">
+  <acl>
+    <resources>
+      <resource id="Magento_Backend::admin">
+        <resource id="Jadlog_Embarcador::jadlog" title="Jadlog">
+          <resource id="Jadlog_Embarcador::pedidos" title="Gerenciar Pedidos" />
+          <resource id="Jadlog_Embarcador::embarcador" title="Gerenciar Embarcador" />
+        </resource>
+      </resource>
+    </resources>
+  </acl>
+</config>

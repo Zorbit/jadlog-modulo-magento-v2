@@ -1,0 +1,12 @@
+<div id="jadlog-pudo-reminder-wrapper" data-bind="visible: shouldShowJadlogPickupInfo()">
+  <div class="step-title">Ponto de retirada</div>
+  <div>Seu pedido será entregue no seguinte local:<div><br/>
+  <div>
+    <input type hidden data-bind="value: getMessage()"></span>
+    <b><span data-bind="text: pudo_name()"></span></b> (<span data-bind="text: pudo_id()"></span>)<br/>
+    <span data-bind="text: pudo_location()"></span><br/><br/>
+    <b>Horário de atendimento: </b><br/>
+    <pre data-bind="text: pudo_opening_hours()"></pre><br/>
+  </div>
+</div>
+<br/>

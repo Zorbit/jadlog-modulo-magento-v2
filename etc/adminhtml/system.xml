@@ -1,0 +1,187 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+  <system>
+    <tab id="jadlog" translate="label" sortOrder="10">
+      <label>Jadlog</label>
+    </tab>
+    <section id="jadlog_embarcador" translate="label" sortOrder="130" showInDefault="1" showInWebsite="1" showInStore="1">
+      <class>separator-top</class>
+      <label>Embarcador</label>
+      <tab>jadlog</tab>
+      <resource>Jadlog_Embarcador::embarcador_config</resource>
+      <group id="geral" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="0" showInStore="0">
+        <label>Configuração Geral</label>
+        <field id="habilitar" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="0" showInStore="0">
+          <label>Habilitar Módulo</label>
+          <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+        </field>
+        <field id="modalidades" translate="label" type="multiselect" sortOrder="1" showInDefault="1" showInWebsite="0" showInStore="0">
+          <label>Modalidades utilizadas:</label>
+          <source_model>Jadlog\Embarcador\Model\Config\Source\Modalidade</source_model>
+          <comment>Marque as modalidades que deseja utilizar.</comment>
+        </field>
+        <field id="token" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="0" showInStore="0">
+          <label>Token</label>
+          <comment>
+            Token de autorização fornecido pela Jadlog após a assinatura do contrato. O token deve ser preenchido no formato "Bearer xYz1234.xYz1234.xYz1234".
+          </comment>
+          <validate>required-entry</validate>
+        </field>
+        <field id="numero_contrato" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="0" showInStore="0">
+          <label>Número do contrato</label>
+          <comment>Número fornecido pela Jadlog após a assinatura do contrato.</comment>
+          <validate>validate-digits</validate>
+        </field>
+        <field id="conta_corrente" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="0" showInStore="0">
+          <label>Conta corrente</label>
+          <comment>Conta corrente fornecida pela Jadlog após a assinatura do contrato.</comment>
+          <validate>validate-digits</validate>
+        </field>
+        <field id="frete_url" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="0" showInStore="0">
+          <label>URL Frete</label>
+          <comment>URL para consulta do frete.</comment>
+          <validate>required-entry validate-url</validate>
+        </field>
+        <field id="pedido_url" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="0" showInStore="0">
+          <label>URL Pedido</label>
+          <comment>URL para inclusão de pedidos.</comment>
+          <validate>required-entry validate-url</validate>
+        </field>
+        <field id="tracking_url" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="0" showInStore="0">
+          <label>URL Tracking</label>
+          <comment>URL para rastreamento de pedidos.</comment>
+          <validate>required-entry validate-url</validate>
+        </field>
+        <!--field id="tracking_site_url" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="0" showInStore="0">
+          <label>URL Tracking no Site</label>
+          <comment>URL para rastreamento de pedidos (via site Jadlog).</comment>
+        </field-->
+      </group>
+      <group id="pickup" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="0" showInStore="0">
+        <label>Dados do serviço pickup</label>
+        <field id="mypudo_url" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="0" showInStore="0">
+          <label>URL Serviço "MyPudo"</label>
+          <comment>URL para consulta dos pontos de retirada (pickup).</comment>
+          <validate>required-entry validate-url</validate>
+        </field>
+        <field id="mypudo_shipper_id" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="0" showInStore="0">
+          <label>ID da embarcadora</label>
+          <comment>Identificação da transportadora/embarcadora para o serviço de consulta de pontos de coleta.</comment>
+          <validate>required-entry validate-length minimum-length-3 maximum-length-3</validate>
+        </field>
+        <field id="mypudo_key" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="0" showInStore="0">
+          <label>Chave "MyPudo"</label>
+          <comment>Chave do serviço de consulta de pontos de coleta fornecida pela Jadlog após a assinatura do contrato.</comment>
+          <validate>validate-length minimum-length-32 maximum-length-32</validate>
+        </field>
+      </group>
+      <group id="remetente" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="0" showInStore="0">
+        <label>Dados da loja (remetente)</label>
+        <field id="nome" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="0" showInStore="0">
+          <label>Loja</label>
+          <comment>Nome da loja.</comment>
+          <validate>required-entry</validate>
+        </field>
+        <field id="cnpj" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="0" showInStore="0">
+          <label>CNPJ</label>
+          <comment>Número do CNPJ da loja (preencher somente com números sem pontuação).</comment>
+          <validate>required-entry validate-digits validate-length minimum-length-14 maximum-length-14</validate>
+        </field>
+        <field id="ie" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="0" showInStore="0">
+          <label>IE</label>
+          <comment>Número da inscrição estadual da loja (preencher somente números sem pontuação). Caso não possua, preencher com a palavra "ISENTA".</comment>
+          <validate>required-entry</validate>
+        </field>
+        <field id="contato" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="0" showInStore="0">
+          <label>Nome para contato</label>
+          <comment>Nome do contato da loja.</comment>
+          <validate>required-entry</validate>
+        </field>
+        <field id="telefone" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="0" showInStore="0">
+          <label>Telefone (fixo)</label>
+          <comment>Número do telefone fixo da loja.</comment>
+          <validate>required-entry</validate>
+        </field>
+        <field id="celular" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="0" showInStore="0">
+          <label>Celular</label>
+          <comment>Número do telefone celular da loja.</comment>
+          <validate>required-entry</validate>
+        </field>
+        <field id="email" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="0" showInStore="0">
+          <label>Email</label>
+          <comment>Email do contato da loja.</comment>
+          <validate>required-entry validate-email</validate>
+        </field>
+        <field id="endereco" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="0" showInStore="0">
+          <label>Endereço (tipo e logradouro)</label>
+          <comment>Endereço da loja. Preencher com o tipo e nome do logradouro.</comment>
+          <validate>required-entry</validate>
+        </field>
+        <field id="numero" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="0" showInStore="0">
+          <label>Número</label>
+          <comment>Número do endereço da loja.</comment>
+          <validate>required-entry</validate>
+        </field>
+        <field id="complemento" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="0" showInStore="0">
+          <label>Complemento</label>
+          <comment>Complemento do endereço da loja.</comment>
+        </field>
+        <field id="uf" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="0" showInStore="0">
+          <label>UF</label>
+          <comment>UF da loja.</comment>
+          <validate>required-entry validate-length minimum-length-2 maximum-length-2</validate>
+          <source_model>Jadlog\Embarcador\Model\Config\Source\UF</source_model>
+        </field>
+        <field id="cidade" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="0" showInStore="0">
+          <label>Cidade</label>
+          <comment>Cidade da loja.</comment>
+          <validate>required-entry</validate>
+        </field>
+        <field id="bairro" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="0" showInStore="0">
+          <label>Bairro</label>
+          <comment>Bairro da loja.</comment>
+          <validate>required-entry</validate>
+        </field>
+        <field id="cep" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="0" showInStore="0">
+          <label>CEP</label>
+          <comment>CEP da loja (somente números).</comment>
+          <validate>required-entry validate-digits validate-length minimum-length-8 maximum-length-8</validate>
+        </field>
+      </group>
+    </section>
+    <section id="carriers" translate="label" type="text" sortOrder="320" showInDefault="1" showInWebsite="1" showInStore="1">
+      <group id="jadlog_expresso" translate="label" type="text" sortOrder="0" showInDefault="1" showInWebsite="1" showInStore="1">
+        <label>Jadlog Expresso</label>
+        <field id="active" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
+          <label>Habilitar</label>
+          <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+        </field>
+        <field id="title" translate="label" type="text" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+          <label>Título</label>
+        </field>
+        <field id="name" translate="label" type="text" sortOrder="3" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+          <label>Nome</label>
+        </field>
+        <field id="sort_order" translate="label" type="text" sortOrder="100" showInDefault="1" showInWebsite="1" showInStore="0">
+          <label>Sort Order</label>
+        </field>
+      </group>
+      <group id="jadlog_pickup" translate="label" type="text" sortOrder="0" showInDefault="1" showInWebsite="1" showInStore="1">
+        <label>Jadlog Pickup</label>
+        <field id="active" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
+          <label>Habilitar</label>
+          <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+        </field>
+        <field id="title" translate="label" type="text" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+          <label>Título</label>
+        </field>
+        <field id="name" translate="label" type="text" sortOrder="3" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+          <label>Nome</label>
+        </field>
+        <field id="sort_order" translate="label" type="text" sortOrder="100" showInDefault="1" showInWebsite="1" showInStore="0">
+          <label>Sort Order</label>
+        </field>
+      </group>
+    </section>
+  </system>
+</config>

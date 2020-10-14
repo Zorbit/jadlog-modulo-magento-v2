@@ -1,0 +1,395 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Ref.: https://webkul.com/blog/how-to-create-a-grid-using-ui-component/ -->
+<listing xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Ui/etc/ui_configuration.xsd">
+  <argument name="data" xsi:type="array">
+    <item name="js_config" xsi:type="array">
+      <item name="provider" xsi:type="string">embarcador_pedidos_listing.embarcador_pedidos_listing_data_source</item>
+      <item name="deps" xsi:type="string">embarcador_pedidos_listing.embarcador_pedidos_listing_data_source</item>
+    </item>
+    <item name="spinner" xsi:type="string">emb_ped_listing_columns</item>
+  </argument>
+  <dataSource name="embarcador_pedidos_listing_data_source">
+    <argument name="dataProvider" xsi:type="configurableObject">
+      <argument name="class" xsi:type="string">Magento\Framework\View\Element\UiComponent\DataProvider\DataProvider</argument>
+      <argument name="name" xsi:type="string">embarcador_pedidos_listing_data_source</argument>
+      <argument name="primaryFieldName" xsi:type="string">id</argument>
+      <argument name="requestFieldName" xsi:type="string">id</argument>
+      <argument name="data" xsi:type="array">
+        <item name="config" xsi:type="array">
+          <item name="update_url" xsi:type="url" path="mui/index/render"/>
+        </item>
+      </argument>
+    </argument>
+    <argument name="data" xsi:type="array">
+      <item name="js_config" xsi:type="array">
+        <item name="component" xsi:type="string">Magento_Ui/js/grid/provider</item>
+      </item>
+    </argument>
+  </dataSource>
+  <container name="listing_top">
+    <argument name="data" xsi:type="array">
+      <item name="config" xsi:type="array">
+        <item name="template" xsi:type="string">ui/grid/toolbar</item>
+      </item>
+    </argument>
+    <bookmark name="bookmarks">
+      <argument name="data" xsi:type="array">
+        <item name="config" xsi:type="array">
+          <item name="component" xsi:type="string">Magento_Ui/js/grid/controls/bookmarks/bookmarks</item>
+          <item name="displayArea" xsi:type="string">dataGridActions</item>
+          <item name="storageConfig" xsi:type="array">
+            <item name="saveUrl" xsi:type="url" path="mui/bookmark/save"/>
+            <item name="deleteUrl" xsi:type="url" path="mui/bookmark/delete"/>
+            <item name="namespace" xsi:type="string">embarcador_pedidos_listing</item>
+          </item>
+        </item>
+      </argument>
+    </bookmark>
+    <container name="columns_controls">
+      <argument name="data" xsi:type="array">
+        <item name="config" xsi:type="array">
+          <item name="columnsData" xsi:type="array">
+            <item name="provider" xsi:type="string">embarcador_pedidos_listing.embarcador_pedidos_listing.emb_ped_listing_columns</item>
+          </item>
+          <item name="component" xsi:type="string">Magento_Ui/js/grid/controls/columns</item>
+          <item name="displayArea" xsi:type="string">dataGridActions</item>
+        </item>
+      </argument>
+    </container>
+    <filters name="listing_filters">
+      <argument name="data" xsi:type="array">
+        <item name="config" xsi:type="array">
+          <item name="displayArea" xsi:type="string">dataGridFilters</item>
+          <item name="dataScope" xsi:type="string">filters</item>
+          <item name="storageConfig" xsi:type="array">
+            <item name="provider" xsi:type="string">embarcador_pedidos_listing.embarcador_pedidos_listing.listing_top.bookmarks</item>
+            <item name="namespace" xsi:type="string">current.filters</item>
+          </item>
+          <item name="childDefaults" xsi:type="array">
+            <item name="provider" xsi:type="string">embarcador_pedidos_listing.embarcador_pedidos_listing.listing_top.listing_filters</item>
+            <item name="imports" xsi:type="array">
+              <item name="visible" xsi:type="string">embarcador_pedidos_listing.embarcador_pedidos_listing.listing_top.bookmarks:current.columns.${ $.index }.visible</item>
+            </item>
+          </item>
+        </item>
+      </argument>
+      <!--filterRange name="increment_id">
+        <argument name="data" xsi:type="array">
+          <item name="config" xsi:type="array">
+            <item name="dataScope" xsi:type="string">increment_id</item>
+            <item name="label" xsi:type="string" translate="true">Order #</item>
+            <item name="childDefaults" xsi:type="array">
+              <item name="provider" xsi:type="string">embarcador_pedidos_listing.embarcador_pedidos_listing.listing_top.listing_filters</item>
+            </item>
+          </item>
+        </argument>
+        <filterInput name="from">
+          <argument name="data" xsi:type="array">
+            <item name="config" xsi:type="array">
+              <item name="dataScope" xsi:type="string">from</item>
+              <item name="label" xsi:type="string" translate="true">from</item>
+              <item name="placeholder" xsi:type="string" translate="true">From</item>
+            </item>
+          </argument>
+        </filterInput>
+        <filterInput name="to">
+          <argument name="data" xsi:type="array">
+            <item name="config" xsi:type="array">
+              <item name="dataScope" xsi:type="string">to</item>
+              <item name="label" xsi:type="string" translate="true">to</item>
+              <item name="placeholder" xsi:type="string" translate="true">To</item>
+            </item>
+          </argument>
+        </filterInput>
+      </filterRange-->
+      <filterRange name="order_id">
+        <argument name="data" xsi:type="array">
+          <item name="config" xsi:type="array">
+            <item name="dataScope" xsi:type="string">order_id</item>
+            <item name="label" xsi:type="string" translate="true">Order ID</item>
+            <item name="childDefaults" xsi:type="array">
+              <item name="provider" xsi:type="string">embarcador_pedidos_listing.embarcador_pedidos_listing.listing_top.listing_filters</item>
+            </item>
+          </item>
+        </argument>
+        <filterInput name="from">
+          <argument name="data" xsi:type="array">
+            <item name="config" xsi:type="array">
+              <item name="dataScope" xsi:type="string">from</item>
+              <item name="label" xsi:type="string" translate="true">from</item>
+              <item name="placeholder" xsi:type="string" translate="true">From</item>
+            </item>
+          </argument>
+        </filterInput>
+        <filterInput name="to">
+          <argument name="data" xsi:type="array">
+            <item name="config" xsi:type="array">
+              <item name="dataScope" xsi:type="string">to</item>
+              <item name="label" xsi:type="string" translate="true">to</item>
+              <item name="placeholder" xsi:type="string" translate="true">To</item>
+            </item>
+          </argument>
+        </filterInput>
+      </filterRange>
+      <filterInput name="pickup">
+        <argument name="data" xsi:type="array">
+          <item name="config" xsi:type="array">
+            <item name="dataScope" xsi:type="string">pickup</item>
+            <item name="label" xsi:type="string" translate="true">Pickup Point</item>
+          </item>
+        </argument>
+      </filterInput>
+      <filterInput name="pudo_id">
+        <argument name="data" xsi:type="array">
+          <item name="config" xsi:type="array">
+            <item name="dataScope" xsi:type="string">pudo_id</item>
+            <item name="label" xsi:type="string" translate="true">Pudo ID</item>
+          </item>
+        </argument>
+      </filterInput>
+      <filterInput name="campos_dfe">
+        <argument name="data" xsi:type="array">
+          <item name="config" xsi:type="array">
+            <item name="dataScope" xsi:type="string">campos_dfe</item>
+            <item name="label" xsi:type="string" translate="true">Campos DFE</item>
+          </item>
+        </argument>
+      </filterInput>
+      <filterInput name="codigo">
+        <argument name="data" xsi:type="array">
+          <item name="config" xsi:type="array">
+            <item name="dataScope" xsi:type="string">codigo</item>
+            <item name="label" xsi:type="string" translate="true">Código Pedido Coleta</item>
+          </item>
+        </argument>
+      </filterInput>
+      <filterInput name="shipment_id">
+        <argument name="data" xsi:type="array">
+          <item name="config" xsi:type="array">
+            <item name="dataScope" xsi:type="string">shipment_id</item>
+            <item name="label" xsi:type="string" translate="true">Shipment ID</item>
+          </item>
+        </argument>
+      </filterInput>
+    </filters>
+    <massaction name="listing_massaction">
+      <argument name="data" xsi:type="array">
+        <item name="config" xsi:type="array">
+          <item name="selectProvider" xsi:type="string">embarcador_pedidos_listing.embarcador_pedidos_listing.emb_ped_listing_columns.ids</item>
+          <item name="component" xsi:type="string">Magento_Ui/js/grid/tree-massactions</item>
+          <item name="indexField" xsi:type="string">id</item>
+        </item>
+      </argument>
+      <action name="send">
+        <argument name="data" xsi:type="array">
+          <item name="config" xsi:type="array">
+            <item name="type" xsi:type="string">send</item>
+            <item name="label" xsi:type="string" translate="true">Enviar pedidos de coleta</item>
+            <item name="confirm" xsi:type="array">
+              <item name="message" xsi:type="string" translate="true">Confirma envio dos pedidos selecionados?</item>
+              <item name="title" xsi:type="string" translate="true">Enviar pedidos de coleta</item>
+            </item>
+            <item name="url" xsi:type="url" path="*/*/massSend"/>
+          </item>
+        </argument>
+      </action>
+    </massaction>
+    <paging name="listing_paging">
+      <argument name="data" xsi:type="array">
+        <item name="config" xsi:type="array">
+          <item name="storageConfig" xsi:type="array">
+            <item name="provider" xsi:type="string">embarcador_pedidos_listing.embarcador_pedidos_listing.listing_top.bookmarks</item>
+            <item name="namespace" xsi:type="string">current.paging</item>
+          </item>
+          <item name="selectProvider" xsi:type="string">embarcador_pedidos_listing.embarcador_pedidos_listing.emb_ped_listing_columns.ids</item>
+          <item name="displayArea" xsi:type="string">bottom</item>
+        </item>
+      </argument>
+    </paging>
+  </container>
+  <columns name="emb_ped_listing_columns">
+    <argument name="data" xsi:type="array">
+      <item name="config" xsi:type="array">
+        <item name="editorConfig" xsi:type="array">
+          <item name="selectProvider" xsi:type="string">
+            embarcador_pedidos_listing.embarcador_pedidos_listing.emb_ped_listing_columns.ids
+          </item>
+          <item name="enabled" xsi:type="boolean">true</item>
+          <item name="indexField" xsi:type="string">id</item>
+          <item name="clientConfig" xsi:type="array">
+            <item name="saveUrl" xsi:type="url" path="*/*/inlineEdit"/>
+            <item name="validateBeforeSave" xsi:type="boolean">false</item>
+          </item>
+        </item>
+        <item name="storageConfig" xsi:type="array">
+          <item name="provider" xsi:type="string">
+            embarcador_pedidos_listing.embarcador_pedidos_listing.listing_top.bookmarks
+          </item>
+          <item name="namespace" xsi:type="string">current</item>
+        </item>
+        <item name="childDefaults" xsi:type="array">
+          <item name="fieldAction" xsi:type="array">
+            <item name="provider" xsi:type="string">
+              embarcador_pedidos_listing.embarcador_pedidos_listing.emb_ped_listing_columns_editor
+            </item>
+            <item name="target" xsi:type="string">startEdit</item>
+            <item name="params" xsi:type="array">
+              <item name="0" xsi:type="string">${ $.$data.rowIndex }</item>
+              <item name="1" xsi:type="boolean">true</item>
+            </item>
+          </item>
+          <item name="storageConfig" xsi:type="array">
+            <item name="provider" xsi:type="string">
+              embarcador_pedidos_listing.embarcador_pedidos_listing.listing_top.bookmarks
+            </item>
+            <item name="root" xsi:type="string">columns.${ $.index }</item>
+            <item name="namespace" xsi:type="string">current.${ $.storageConfig.root}</item>
+          </item>
+        </item>
+      </item>
+    </argument>
+    <selectionsColumn name="ids">
+      <argument name="data" xsi:type="array">
+        <item name="config" xsi:type="array">
+          <item name="indexField" xsi:type="string">id</item>
+          <item name="sortOrder" xsi:type="number">0</item>
+        </item>
+      </argument>
+    </selectionsColumn>
+    <!--column name="id">
+      <argument name="data" xsi:type="array">
+        <item name="config" xsi:type="array">
+          <item name="filter" xsi:type="string">textRange</item>
+          <item name="component" xsi:type="string">Magento_Ui/js/grid/columns/column</item>
+          <item name="dataType" xsi:type="string">text</item>
+          <item name="label" xsi:type="string" translate="true">ID</item>
+          <item name="sortOrder" xsi:type="number">1</item>
+        </item>
+      </argument>
+    </column-->
+    <column name="increment_id">
+      <argument name="data" xsi:type="array">
+        <item name="config" xsi:type="array">
+          <item name="filter" xsi:type="string">text</item>
+          <item name="component" xsi:type="string">Magento_Ui/js/grid/columns/column</item>
+          <item name="dataType" xsi:type="string">text</item>
+          <item name="label" xsi:type="string" translate="true">Order #</item>
+          <item name="sorting" xsi:type="string">desc</item>
+          <item name="sortOrder" xsi:type="number">10</item>
+        </item>
+      </argument>
+    </column>
+    <column name="order_id">
+      <argument name="data" xsi:type="array">
+        <item name="config" xsi:type="array">
+          <item name="filter" xsi:type="string">textRange</item>
+          <item name="component" xsi:type="string">Magento_Ui/js/grid/columns/column</item>
+          <item name="dataType" xsi:type="string">text</item>
+          <item name="label" xsi:type="string" translate="true">Order Id</item>
+          <item name="sorting" xsi:type="string">desc</item>
+          <item name="sortOrder" xsi:type="number">15</item>
+        </item>
+      </argument>
+    </column>
+    <column name="shipping_description">
+      <argument name="data" xsi:type="array">
+        <item name="config" xsi:type="array">
+          <item name="filter" xsi:type="string">text</item>
+          <item name="component" xsi:type="string">Magento_Ui/js/grid/columns/column</item>
+          <item name="dataType" xsi:type="string">text</item>
+          <item name="label" xsi:type="string" translate="true">Forma de Envio</item>
+          <item name="sortOrder" xsi:type="number">20</item>
+        </item>
+      </argument>
+    </column>
+    <column name="pickup">
+      <argument name="data" xsi:type="array">
+        <item name="config" xsi:type="array">
+          <item name="filter" xsi:type="string">text</item>
+          <item name="component" xsi:type="string">Magento_Ui/js/grid/columns/column</item>
+          <item name="dataType" xsi:type="string">text</item>
+          <item name="label" xsi:type="string" translate="true">Pickup Point</item>
+          <item name="sortOrder" xsi:type="number">30</item>
+        </item>
+      </argument>
+    </column>
+    <column name="pudo_id">
+      <argument name="data" xsi:type="array">
+        <item name="config" xsi:type="array">
+          <item name="filter" xsi:type="string">text</item>
+          <item name="component" xsi:type="string">Magento_Ui/js/grid/columns/column</item>
+          <item name="dataType" xsi:type="string">text</item>
+          <item name="label" xsi:type="string" translate="true">Pudo ID</item>
+          <item name="sortOrder" xsi:type="number">40</item>
+        </item>
+      </argument>
+    </column>
+    <column name="campos_dfe">
+      <argument name="data" xsi:type="array">
+        <item name="config" xsi:type="array">
+          <item name="editor" xsi:type="array">
+            <item name="editorType" xsi:type="string">text</item>
+            <item name="validation" xsi:type="array">
+              <item name="required-entry" xsi:type="boolean">true</item>
+            </item>
+          </item>
+          <item name="filter" xsi:type="string">text</item>
+          <item name="component" xsi:type="string">Magento_Ui/js/grid/columns/column</item>
+          <item name="dataType" xsi:type="string">text</item>
+          <item name="label" xsi:type="string" translate="true">Campos DFE</item>
+          <item name="sortOrder" xsi:type="number">50</item>
+        </item>
+      </argument>
+    </column>
+    <column name="codigo">
+      <argument name="data" xsi:type="array">
+        <item name="config" xsi:type="array">
+          <item name="filter" xsi:type="string">textRange</item>
+          <item name="component" xsi:type="string">Magento_Ui/js/grid/columns/column</item>
+          <item name="dataType" xsi:type="string">text</item>
+          <item name="label" xsi:type="string" translate="true">Cód.Ped.Coleta</item>
+          <item name="sortOrder" xsi:type="number">60</item>
+        </item>
+      </argument>
+    </column>
+    <column name="shipment_id">
+      <argument name="data" xsi:type="array">
+        <item name="config" xsi:type="array">
+          <item name="filter" xsi:type="string">textRange</item>
+          <item name="component" xsi:type="string">Magento_Ui/js/grid/columns/column</item>
+          <item name="dataType" xsi:type="string">text</item>
+          <item name="label" xsi:type="string" translate="true">Shipment ID</item>
+          <item name="sortOrder" xsi:type="number">70</item>
+        </item>
+      </argument>
+    </column>
+    <column name="status">
+      <argument name="data" xsi:type="array">
+        <item name="config" xsi:type="array">
+          <item name="filter" xsi:type="string">text</item>
+          <item name="component" xsi:type="string">Magento_Ui/js/grid/columns/column</item>
+          <item name="dataType" xsi:type="string">text</item>
+          <item name="label" xsi:type="string" translate="true">Status</item>
+          <item name="sortOrder" xsi:type="number">80</item>
+        </item>
+      </argument>
+    </column>
+    <!--actionsColumn name="actions" class="Jadlog\Embarcador\Ui\Component\Listing\Column\PedidosActions">
+      <argument name="data" xsi:type="array">
+        <item name="config" xsi:type="array">
+          <item name="indexField" xsi:type="string">id</item>
+          <item name="sortOrder" xsi:type="number">200</item>
+        </item>
+      </argument>
+    </actionsColumn-->
+    <actionsColumn name="actions">
+      <argument name="data" xsi:type="array">
+        <item name="config" xsi:type="array">
+          <item name="label" xsi:type="string">_</item>
+          <item name="indexField" xsi:type="string">id</item>
+          <item name="sortOrder" xsi:type="number">200</item>
+        </item>
+      </argument>
+    </actionsColumn>
+  </columns>
+</listing>

@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
+  <menu>
+    <add id="Jadlog_Embarcador::jadlog" title="Jadlog Embarcador" module="Jadlog_Embarcador" sortOrder="100" resource="Magento_Sales::sales" parent="Magento_Sales::sales"/>
+    <add id="Jadlog_Embarcador::pedidos" title="Gerenciar Pedidos" module="Jadlog_Embarcador" sortOrder="10" action="embarcador/pedidos" resource="Jadlog_Embarcador::pedidos" parent="Jadlog_Embarcador::jadlog"/>
+  </menu>
+</config>

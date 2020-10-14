@@ -1,0 +1,49 @@
+<div id="popup-jadlog-pickup"
+  data-bind="mageInit: {
+    'Magento_Ui/js/modal/modal':{
+    'type': 'popup',
+    'autoOpen': shouldShowPopupJadlogPickup(),
+    'title': 'Escolha o ponto de retirada',
+    'responsive': true,
+    'clickableOverlay': false,
+    'buttons': [{
+      text: 'Ok',
+      class: 'action'
+    }],
+    'closed': function() {
+      reloadRates();
+    }
+  }}"
+>
+  <div class="content">
+    <div id="jadlog-pudo-list-wrapper" data-bind="visible: shouldShowPopupJadlogPickup()">
+      <p data-bind="visible: !showPudoSelection(), i18n: 'Aguarde: carregando os pontos de retirada mais próximos...'"></p>
+      <div data-bind="visible: showPudoSelection()">
+        <p>
+          <span data-bind="i18n: 'Escolha o ponto de retirada:'"></span>
+        </p>
+        <select id="jadlog-pudo-list"
+          data-bind="options: pudos(),
+          value: selectedPudo,
+          optionsValue: 'id',
+          optionsText: function(item){return item.name + ' (' + item.location +')' + ' Frete: ' + formatPrice(item.rate);}"
+        >
+        </select><br/><br/>
+        <div>
+          <b><span data-bind="text: selectedPudoObject().Name"></span></b> (<span data-bind="text: selectedPudoObject().PudoId"></span>)
+          <br/>
+          <span data-bind="text: selectedPudoObject().Location"></span>
+          <br/>
+          <b>Frete: <span data-bind="text: formatPrice(selectedPudoObject().Rate)"></span></b>
+          <br/><br/>
+          <b>Horário de atendimento: </b><br/>
+          <pre data-bind="text: selectedPudoObject().OpeningHours"></pre><br/>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+<div id="openpopup-jadlog-pickup" class="info" data-bind="visible: shouldShowJadlogPickupInfo()">
+  <a click="showPopupJadlogPickup">Clique aqui para escolher outro ponto de retirada.</a>
+</div>

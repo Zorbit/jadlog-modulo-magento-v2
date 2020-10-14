@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+
+<routes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Webapi:etc/webapi.xsd">
+  <!-- Managing Pudo List on Checkout page -->
+  <route url="/V1/jadlog_embarcador/get-pudo-list/:postcode/:city" method="GET">
+    <service class="Jadlog\Embarcador\Api\PudoManagementInterface" method="fetchPudos"/>
+    <resources>
+      <resource ref="anonymous" />
+    </resources>
+  </route>
+  <!-- Setting Pudo Data on CheckoutSession -->
+  <route url="/V1/jadlog_embarcador/set-pudo" method="POST">
+    <service class="Jadlog\Embarcador\Api\PudoManagementInterface" method="setPudo"/>
+    <resources>
+      <resource ref="anonymous" />
+    </resources>
+  </route>
+</routes>

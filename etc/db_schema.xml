@@ -1,0 +1,64 @@
+<?xml version="1.0"?>
+<!-- More info at: https://devdocs.magento.com/guides/v2.3/extension-dev-guide/declarative-schema/db-schema.html -->
+<schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
+  <table name="jadlog_modalidades" resource="default" engine="innodb" comment="Jadlog Modalidades">
+    <column xsi:type="smallint"  name="id"            padding="3"  unsigned="true" nullable="false" identity="true"  comment="Id"/>
+    <column xsi:type="smallint"  name="codigo"        padding="3"  unsigned="true" nullable="false" identity="false" comment="Código"/>
+    <column xsi:type="varchar"   name="descricao"     length="255" nullable="false" comment="Descrição"/>
+    <column xsi:type="varchar"   name="modal"         length="2"   nullable="false" comment="Modal (A = Aéreo, R = Rodoviáro)"/>
+    <column xsi:type="smallint" name="ativo" padding="2" unsigned="true" nullable="false" identity="false" default="1" comment="Modalidade está ativa?"/>
+    <column xsi:type="timestamp" name="created_at" on_update="false" nullable="false" default="CURRENT_TIMESTAMP" comment="Hor. criação"/>
+    <column xsi:type="timestamp" name="updated_at" on_update="true"  nullable="false" default="CURRENT_TIMESTAMP" comment="Hor. alteração"/>
+    <constraint xsi:type="primary" referenceId="PRIMARY">
+      <column name="id"/>
+    </constraint>
+    <constraint xsi:type="unique" referenceId="UNIQUE_KEY">
+      <column name="codigo"/>
+    </constraint>
+    <index indexType="fulltext" referenceId="JADLOG_MODALIDADES_DESCRICAO">
+      <column name="descricao"/>
+    </index>
+  </table>
+  <table name="jadlog_quote" resource="checkout" engine="innodb" comment="jadlog_quote">
+    <column xsi:type="int" name="id" padding="10" unsigned="true" nullable="false" identity="true" comment="Id"/>
+    <column xsi:type="int" name="quote_id" padding="10" unsigned="true" nullable="false" identity="false" comment="Quote ID"/>
+    <column xsi:type="varchar" name="pickup" nullable="true" length="255" comment="Pickup Point"/>
+    <column xsi:type="varchar" name="pudo_id" nullable="true" length="255" comment="Pickup Point Id"/>
+    <constraint xsi:type="primary" referenceId="PRIMARY">
+      <column name="id"/>
+    </constraint>
+    <constraint xsi:type="foreign" referenceId="JADLOG_QUOTE_QUOTE_ID_QUOTE_ENTITY_ID" table="jadlog_quote" column="quote_id" referenceTable="quote" referenceColumn="entity_id" onDelete="CASCADE"/>
+    <constraint xsi:type="unique" referenceId="JADLOG_QUOTE_QUOTE_ID">
+      <column name="quote_id"/>
+    </constraint>
+  </table>
+  <table name="jadlog_sales_order" resource="sales" engine="innodb" comment="jadlog_sales_order">
+    <column xsi:type="int" name="id" padding="10" unsigned="true" nullable="false" identity="true" comment="Id"/>
+    <column xsi:type="int" name="order_id" padding="10" unsigned="true" nullable="false" identity="false" comment="Order ID"/>
+    <column xsi:type="varchar" name="pickup" nullable="true" length="255" comment="Pickup Point"/>
+    <column xsi:type="varchar" name="pudo_id" nullable="true" length="255" comment="Pickup Point Id"/>
+    <column xsi:type="varchar" name="campos_dfe" nullable="true" length="255" comment="Campos DFE"/>
+    <column xsi:type="varchar" name="codigo" nullable="true" length="255" comment="Codigo Pedido Coleta"/>
+    <column xsi:type="varchar" name="shipment_id" nullable="true" length="255" comment="Shipment Id"/>
+    <column xsi:type="varchar" name="status" nullable="true" length="255" comment="Status Pedido Coleta"/>
+    <constraint xsi:type="primary" referenceId="PRIMARY">
+      <column name="id"/>
+    </constraint>
+    <constraint xsi:type="foreign" referenceId="JADLOG_SALES_ORDER_ORDER_ID_SALES_ORDER_ENTITY_ID" table="jadlog_sales_order" column="order_id" referenceTable="sales_order" referenceColumn="entity_id" onDelete="CASCADE"/>
+    <constraint xsi:type="unique" referenceId="JADLOG_SALES_ORDER_ORDER_ID">
+      <column name="order_id"/>
+    </constraint>
+    <index referenceId="JADLOG_SALES_ORDER_PUDO_ID" indexType="btree">
+        <column name="pudo_id"/>
+    </index>
+    <index referenceId="JADLOG_SALES_ORDER_CAMPOS_DFE" indexType="btree">
+        <column name="campos_dfe"/>
+    </index>
+    <index referenceId="JADLOG_SALES_ORDER_ORDER_CODIGO" indexType="btree">
+        <column name="codigo"/>
+    </index>
+    <index referenceId="JADLOG_SALES_ORDER_ORDER_SHIPMENT_ID" indexType="btree">
+        <column name="shipment_id"/>
+    </index>
+  </table>
+</schema>

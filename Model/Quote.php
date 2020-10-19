@@ -1,22 +1,29 @@
 <?php
+
 namespace Jadlog\Embarcador\Model;
 
-class Quote extends \Magento\Framework\Model\AbstractModel implements \Magento\Framework\DataObject\IdentityInterface {
-  const CACHE_TAG = 'jadlog_quote';
-  protected $_cacheTag = 'jadlog_quote';
-  protected $_eventPrefix = 'jadlog_quote';
+use Magento\Framework\Model\AbstractModel;
+use Magento\Framework\DataObject\IdentityInterface;
 
-  protected function _construct() {
-    $this->_init('Jadlog\Embarcador\Model\ResourceModel\Quote');
-  }
+class Quote extends AbstractModel implements IdentityInterface
+{
+    const CACHE_TAG = 'jadlog_quote';
+    protected $_cacheTag = 'jadlog_quote';
+    protected $_eventPrefix = 'jadlog_quote';
 
-  public function getIdentities() {
-    return [self::CACHE_TAG . '_' . $this->getId()];
-  }
+    protected function _construct()
+    {
+        $this->_init('Jadlog\Embarcador\Model\ResourceModel\Quote');
+    }
 
-  public function getDefaultValues() {
-    $values = [];
-    return $values;
-  }
+    public function getIdentities()
+    {
+        return [self::CACHE_TAG . '_' . $this->getId()];
+    }
+
+    public function getDefaultValues()
+    {
+        $values = [];
+        return $values;
+    }
 }
-?>

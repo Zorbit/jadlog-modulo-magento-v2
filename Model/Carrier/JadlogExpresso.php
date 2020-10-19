@@ -1,102 +1,120 @@
 <?php
+
 namespace Jadlog\Embarcador\Model\Carrier;
 
-use Magento\Quote\Model\Quote\Address\RateRequest;
-use Magento\Shipping\Model\Rate\Result;
+use Jadlog\Embarcador\Helper\Data;
 use Jadlog\Embarcador\Integracao\Frete\Valor as FreteValor;
+use Magento\Framework\App\Config\ScopeConfigInterface;
+use Magento\Quote\Model\Quote\Address\RateRequest;
+use Magento\Quote\Model\Quote\Address\RateResult\ErrorFactory;
+use Magento\Quote\Model\Quote\Address\RateResult\MethodFactory;
+use Magento\Shipping\Model\Carrier\AbstractCarrier;
+use Magento\Shipping\Model\Carrier\CarrierInterface;
+use Magento\Shipping\Model\Rate\Result;
+use Magento\Shipping\Model\Rate\ResultFactory;
+use Psr\Log\LoggerInterface;
 
-class JadlogExpresso extends \Magento\Shipping\Model\Carrier\AbstractCarrier
-implements \Magento\Shipping\Model\Carrier\CarrierInterface {
+class JadlogExpresso extends AbstractCarrier implements CarrierInterface
+{
+    const CODE = 'jadlog_expresso';
+    protected $_code = JadlogExpresso::CODE;
 
-	const CODE = 'jadlog_expresso';
-	protected $_code = JadlogExpresso::CODE;
+    public static function carrierMethod()
+    {
+        return JadlogExpresso::CODE . "_" . JadlogExpresso::CODE;
+    }
 
-	public static function carrierMethod() {
-		return JadlogExpresso::CODE . "_" . JadlogExpresso::CODE;
-	}
+    protected $_rateResultFactory;
+    protected $_rateMethodFactory;
+    protected $_logger;
+    protected $_helperData;
 
-	protected $_rateResultFactory;
-	protected $_rateMethodFactory;
-	protected $_logger;
-	protected $_helperData;
+    public function __construct(
+        ScopeConfigInterface $scopeConfig,
+        ErrorFactory $rateErrorFactory,
+        LoggerInterface $logger,
+        ResultFactory $rateResultFactory,
+        Data $helperData,
+        MethodFactory $rateMethodFactory,
+        array $data = []
+    )
+    {
+        $this->_rateResultFactory = $rateResultFactory;
+        $this->_rateMethodFactory = $rateMethodFactory;
+        $this->_logger = $logger;
+        $this->_helperData = $helperData;
+        parent::__construct($scopeConfig, $rateErrorFactory, $logger, $data);
+    }
 
-	public function __construct(
-		\Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig,
-		\Magento\Quote\Model\Quote\Address\RateResult\ErrorFactory $rateErrorFactory,
-		\Psr\Log\LoggerInterface $logger,
-		\Magento\Shipping\Model\Rate\ResultFactory $rateResultFactory,
-		\Jadlog\Embarcador\Helper\Data $helperData,
-		\Magento\Quote\Model\Quote\Address\RateResult\MethodFactory $rateMethodFactory,
-		array $data = []
-	) {
-		$this->_rateResultFactory = $rateResultFactory;
-		$this->_rateMethodFactory = $rateMethodFactory;
-		$this->_logger = $logger;
-		$this->_helperData = $helperData;
-		parent::__construct($scopeConfig, $rateErrorFactory, $logger, $data);
-	}
+    public function getAllowedMethods()
+    {
+        return [$this->_code => $this->getConfigData('name')];
+    }
 
-	public function getAllowedMethods() {
-		return [$this->_code => $this->getConfigData('name')];
-	}
+    private function getShippingPrice($cep, $peso, $valor_declarado, $modalidade)
+    {
+        $f = new FreteValor($this->_helperData, $cep, $peso, $valor_declarado, $modalidade);
+        $r = $f->getData();
 
-	private function getShippingPrice($cep, $peso, $valor_declarado, $modalidade) {
-		$f = new FreteValor($this->_helperData, $cep, $peso, $valor_declarado, $modalidade);
-		$r = $f->getData();
+        $shippingPrice = isset($r[$cep]['frete'][0]['vltotal']) && $r[$cep]['frete'][0]['vltotal'] != '' ? $r[$cep]['frete'][0]['vltotal'] : null;
 
-		$shippingPrice = $r[$cep]['frete'][0]['vltotal'];
+        return $shippingPrice;
+    }
 
-		return $shippingPrice;
-	}
+    public function collectRates(RateRequest $request)
+    {
+        // saved in var/log/shipping.log
+        $this->_logger->debug(
+            get_class($this) . '->' . __FUNCTION__, [
+                $request->getDestPostcode(),
+                strlen($request->getDestPostcode()),
+                $this->_helperData->getExpressoHabilitado()
+            ]
+        );
 
-	public function collectRates(RateRequest $request) {
-		// saved in var/log/shipping.log
-		$this->_logger->debug(
-			get_class($this) . '->' . __FUNCTION__, [
-				$request->getDestPostcode(),
-				strlen($request->getDestPostcode()),
-				$this->_helperData->getExpressoHabilitado()
-			]
-		);
+        if (!$this->_helperData->getExpressoHabilitado() || (strlen($request->getDestPostcode()) < 8)) {
+            return false;
+        }
 
-		if (!$this->_helperData->getExpressoHabilitado() || (strlen($request->getDestPostcode()) < 8)) {
-			return false;
-		}
-		$cep = $this->_helperData->getCep($request->getDestPostcode());
-		if (empty($cep["error"])) {
-			// @var \Magento\Shipping\Model\Rate\Result $result
-			$result = $this->_rateResultFactory->create();
+        $cep = $this->_helperData->getCep($request->getDestPostcode());
 
-			// @var \Magento\Quote\Model\Quote\Address\RateResult\Method $method
-			$method = $this->_rateMethodFactory->create();
+        if (empty($cep["error"])) {
+            // @var \Magento\Shipping\Model\Rate\Result $result
+            $result = $this->_rateResultFactory->create();
 
-			$method->setCarrier($this->_code);
-			$method->setCarrierTitle($this->getConfigData('title'));
+            // @var \Magento\Quote\Model\Quote\Address\RateResult\Method $method
+            $method = $this->_rateMethodFactory->create();
 
-			$method->setMethod($this->_code);
-			$method->setMethodTitle($this->getConfigData('name'));
+            $method->setCarrier($this->_code);
+            $method->setCarrierTitle($this->getConfigData('title'));
 
-			$amount = $this->getShippingPrice(
-				$cep['cep'],
-				$request->getPackageWeight(),
-				$request->getPackageValue(),
-				$this->_helperData->getCodigoExpresso()
-			);
+            $method->setMethod($this->_code);
+            $method->setMethodTitle($this->getConfigData('name'));
 
-			$method->setPrice($amount);
-			$method->setCost($amount);
+            $amount = $this->getShippingPrice(
+                $cep['cep'],
+                $request->getPackageWeight(),
+                $request->getPackageValue(),
+                $this->_helperData->getCodigoExpresso()
+            );
 
-			$result->append($method);
+            if ($amount == null) {
+                return false;
+            }
 
-			return $result;
-		} else {
-			$message = "Digite o CEP corretamente. CEP informado: " . $request->getDestPostcode();
-			$error = $this->_rateErrorFactory->create();
-			$error->setCarrier($this->_code)
-			  ->setCarrierTitle($this->getConfigData('title'))
-				->setErrorMessage(__($cep["error"]));
-			return $error;
-		}
-	}
+            $method->setPrice($amount);
+            $method->setCost($amount);
 
+            $result->append($method);
+
+            return $result;
+        } else {
+            $message = "Digite o CEP corretamente. CEP informado: " . $request->getDestPostcode();
+            $error = $this->_rateErrorFactory->create();
+            $error->setCarrier($this->_code)
+                ->setCarrierTitle($this->getConfigData('title'))
+                ->setErrorMessage(__($cep["error"]));
+            return $error;
+        }
+    }
 }
